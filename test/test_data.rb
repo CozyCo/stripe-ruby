@@ -107,8 +107,10 @@ module Stripe
         :object => "customer",
         :id => id,
         :default_card => "cc_test_card",
+        :default_bank_account => "ba_test_bank_account",
         :created => 1304114758,
         :sources => make_customer_card_array(id),
+        :bank_accounts => test_customer_bank_account_array(id),
         :metadata => {},
         :subscriptions => make_subscription_array(id)
       }.merge(params)
@@ -182,6 +184,28 @@ module Stripe
         :id => "cc_test_card",
         :customer => 'c_test_customer',
         :object => "card"
+      }.merge(params)
+    end
+
+    def test_customer_bank_account_array(customer_id)
+      {
+        :data => [test_bank_account, test_bank_account, test_bank_account],
+        :object => 'list',
+        :url => '/v1/customers/' + customer_id + '/bank_accounts'
+      }
+    end
+
+    def test_bank_account(params={})
+      {
+        :bank_name => "STRIPE TEST BANK",
+        :last4 => "6789",
+        :currencey => "usd",
+        :country => "US",
+        :routing_number => "110000000",
+        :status => "new",
+        :id => "ba_test_bank_account",
+        :customer => 'c_test_customer',
+        :object => "bank_account"
       }.merge(params)
     end
 
