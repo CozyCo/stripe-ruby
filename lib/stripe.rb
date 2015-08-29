@@ -68,7 +68,7 @@ module Stripe
 
 
   class << self
-    attr_accessor :api_key, :api_base, :verify_ssl_certs, :api_version, :connect_base, :uploads_base
+    attr_accessor :api_key, :api_base, :verify_ssl_certs, :api_version, :connect_base, :uploads_base, :handle_response
   end
 
   def self.api_url(url='', api_base_url=nil)
@@ -148,6 +148,7 @@ module Stripe
       handle_restclient_error(e, api_base_url)
     end
 
+    response = handle_response.call(request_opts, response) if handle_response
     [parse(response), api_key]
   end
 
